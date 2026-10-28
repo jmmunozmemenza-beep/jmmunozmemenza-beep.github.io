@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es-PE">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#4b73fa" />
+    <meta
+      name="description"
+      content="HeyVet: demostración de cuidado y gestión de mascotas."
+    />
+    <title>HeyVet · El cuidado que nos une</title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="HeyVet" />
+    <script type="module" crossorigin src="/assets/index-q2RqUMFP.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-D3oz5Brm.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      (function () {
+        var SCALE = 1.5;
+        function apply(el) {
+          if (!el || el.nodeType !== 1) return;
+          if (el.dataset.fsBase) return;
+          var fs = parseFloat(getComputedStyle(el).fontSize);
+          if (!fs || isNaN(fs) || fs <= 0) return;
+          el.dataset.fsBase = fs;
+          el.style.setProperty("font-size", (fs * SCALE).toFixed(2) + "px", "important");
+        }
+        function walk(root) {
+          if (!root || root.nodeType !== 1) return;
+          var kids = root.children;
+          for (var i = 0; i < kids.length; i++) walk(kids[i]);
+          apply(root);
+        }
+        function start() {
+          walk(document.body);
+          new MutationObserver(function (records) {
+            for (var r = 0; r < records.length; r++) {
+              var nodes = records[r].addedNodes;
+              for (var n = 0; n < nodes.length; n++) walk(nodes[n]);
+            }
+          }).observe(document.body, { childList: true, subtree: true });
+        }
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", start);
+        } else {
+          start();
+        }
+      })();
+    </script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker.register("/sw.js").catch(function () {});
+        });
+      }
+    </script>
+  </body>
+</html>
